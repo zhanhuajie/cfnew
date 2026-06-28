@@ -1,0 +1,45 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - '少年你相信光吗'
+      - '明文源吗'
+      - 'wrangler.toml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Workers
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Prepare Entrypoint
+        run: |
+          if [ -f "少年你相信光吗" ]; then
+            cp "少年你相信光吗" "index.js"
+            echo "Using obfuscated file '少年你相信光吗' as entrypoint (copied to index.js)"
+          elif [ -f "明文源吗" ]; then
+            cp "明文源吗" "index.js"
+            echo "Using plain text file '明文源吗' as entrypoint (copied to index.js)"
+          else
+            echo "Error: Neither '少年你相信光吗' nor '明文源吗' was found!"
+            exit 1
+          fi
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
