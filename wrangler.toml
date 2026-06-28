@@ -9,4 +9,8 @@ command = "node -e \"const fs = require('fs'); fs.copyFileSync('明文源吗', '
 binding = "C"
 id = "2966e383796647828fa8fee443f505a8"
 
+[vars]
+u = "c345302c-6343-4bc4-82da-d7ea19c50a95"
+
+
 
