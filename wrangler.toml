@@ -5,3 +5,8 @@ compatibility_date = "2026-01-20"
 [build]
 command = "node -e \"const fs = require('fs'); const f = fs.existsSync('少年你相信光吗') ? '少年你相信光吗' : '明文源吗'; fs.copyFileSync(f, 'index.js');\""
 
+[[kv_namespaces]]
+binding = "C"
+id = "2966e383796647828fa8fee443f505a8"
+
+
