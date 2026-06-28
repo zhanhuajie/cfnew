@@ -1,6 +1,7 @@
 // CFnew - 终端 v2.9.8c
 // 版本: v2.9.8c 
-import { connect as 连接 } from 'cloudflare:sockets';
+import { connect } from 'cloudflare:sockets';
+const 连接 = connect;
 const 基础64文本解码器 = new TextDecoder();
 function 解码64(文本) {
   const 二进制 = atob(文本);
@@ -612,6 +613,20 @@ function 解析地址值端口(输入) {
 export default {
   async fetch(请求735, 本地值734, 本地值733) {
     try {
+      const debugUrl = new URL(请求735.url);
+      if (debugUrl.pathname === '/debug') {
+        const diagnostics = {
+          env_keys: Object.keys(本地值734 || {}),
+          has_C: !!(本地值734 && 本地值734.C),
+          connect_type: typeof 连接,
+          user_agent: 请求735.headers.get('User-Agent'),
+          time: new Date().toISOString()
+        };
+        return new Response(JSON.stringify(diagnostics, null, 2), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json; charset=utf-8' }
+        });
+      }
       const 是否网页套接字 = 请求735.headers.get('Upgrade') === atob('d2Vic29ja2V0');
       const 是否值732 = 请求735.method === 'POST';
       const 请求网址731 = new URL(请求735.url);
